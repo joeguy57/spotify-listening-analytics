@@ -1,0 +1,26 @@
+version: 2
+
+sources:
+  - name: bronze
+    database: spotify_analytics
+    schema: bronze
+    tables:
+      - name: listening_events
+        description: "Raw Spotify listening history, one row per play event"
+        loaded_at_field: ts
+        freshness:
+          warn_after: { count: 30, period: day }
+          error_after: { count: 90, period: day }
+        columns:
+          - name: track_id
+            description: "Foreign key to tracks table"
+          - name: user_id
+            description: "User identifier"
+          - name: ts
+            description: "Timestamp of the play event"
+
+      - name: tracks
+        description: "Raw track-level audio features and metadata"
+        columns:
+          - name: track_id
+            description: "Primary key — may contain duplicates in raw source"

@@ -1,0 +1,49 @@
+version: 2
+
+models:
+  - name: stg_tracks
+    description: "Cleaned, deduplicated track catalog with audio features"
+    columns:
+      - name: track_id
+        description: "Primary key"
+        tests:
+          - unique
+          - not_null
+      - name: genre
+        tests:
+          - not_null
+      - name: popularity
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+
+  - name: stg_listening_events
+    description: "Cleaned listening event log, one row per play"
+    columns:
+      - name: event_id
+        description: "Surrogate key for each play event"
+        tests:
+          - unique:
+              config:
+                severity: warn
+          - not_null:
+              config:
+                severity: warn
+      - name: track_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_tracks')
+              field: track_id
+              config:
+                severity: warn
+      - name: user_id
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: is_skip
+        tests:
+          - accepted_values:
+              values: [true, false]
