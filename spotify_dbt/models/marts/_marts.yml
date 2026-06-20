@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: dim_tracks
+    columns:
+      - name: track_id
+        tests: [unique, not_null]
+
+  - name: dim_users
+    columns:
+      - name: user_id
+        tests: [unique, not_null]
+
+  - name: fct_listening_events
+    columns:
+      - name: event_id
+        tests: [unique, not_null]
+      - name: user_id
+        tests:
+          - relationships:
+              to: ref('dim_users')
+              field: user_id
+
+  - name: mart_user_engagement
+    columns:
+      - name: user_id
+        tests: [unique, not_null]
+      - name: skip_rate
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 1
+
+  - name: mart_churn_signals
+    columns:
+      - name: user_id
+        tests: [unique, not_null]
+      - name: churn_risk_tier
+        tests:
+          - accepted_values:
+              values: ['high_risk', 'moderate_risk', 'stable']
