@@ -1,0 +1,11 @@
+spotify_dbt:
+  outputs:
+    dev:
+      catalog: spotify_analytics
+      host: 
+      http_path: 
+      schema: default
+      threads: 1
+      token: da---------------------------------------------
+      type: databricks
+  target: dev
