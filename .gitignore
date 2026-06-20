@@ -1,0 +1,22 @@
+# ── Secrets ───────────────────────────
+.env
+spotify_dbt/profiles.yml
+# ── Python ────────────────────────────
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+# ── dbt ───────────────────────────────
+spotify_dbt/target/
+spotify_dbt/dbt_packages/
+spotify_dbt/logs/
+spotify_dbt/profiles.yml
+spotify_dbt/.user.yml
+spotify_dbt/dbt_project.yml
+# ── Data ──────────────────────────────
+data/
+*.csv
+*.json
+# ── OS ────────────────────────────────
+.DS_Store
+Thumbs.db
